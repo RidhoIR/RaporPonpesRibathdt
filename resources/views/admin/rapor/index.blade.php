@@ -135,7 +135,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('rapor.update', $rapor->id) }}" method="POST">
+                        <form action="{{ route('rapor.update.rapor', $rapor->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">

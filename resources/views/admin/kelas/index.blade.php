@@ -22,7 +22,7 @@
                     <tbody>
                         @foreach ($classrooms as $classroom)
                             <tr>
-                                <td>{{ $classroom->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $classroom->nama }}</td>
                                 <td>{{ $classroom->tahun_ajaran }}</td>
                                 {{-- <td>{{ $classroom->tahun_ajaran_hijriah }}</td> --}}

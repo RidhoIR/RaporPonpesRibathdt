@@ -44,7 +44,7 @@
                     <tbody>
                         @foreach ($rapors as $rapor)
                             <tr>
-                                <td>{{ $rapor->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $rapor->santri->nama }}</td>
                                 <td>{{ $rapor->santri->classroom->nama }}</td>
                                 <td>{{ $rapor->semester }}</td>
@@ -58,9 +58,9 @@
                                             onclick="window.location.href='{{ route('rapor.show', $rapor->id) }}'">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="btn btn-outline-danger me-2" data-bs-toggle="modal"
+                                        {{-- <button class="btn btn-outline-danger me-2" data-bs-toggle="modal"
                                             data-bs-target="#confirmDeleteModal{{ $rapor->id }}">
-                                            <i class="fas fa-trash"></i>
+                                            <i class="fas fa-trash"></i> --}}
                                         </button>
                                         <button class="btn btn-outline-warning me-2" data-bs-toggle="modal"
                                             data-bs-target="#editModal{{ $rapor->id }}">
@@ -153,7 +153,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('rapor.update', $rapor->id) }}" method="POST">
+                        <form action="{{ route('rapor.update.rapor', $rapor->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">

@@ -7,6 +7,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('assets/images/logoponpes.png') }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -79,12 +80,26 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('mapel.index') }}">
+                    <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon">
                             <ion-icon name="book-outline"></ion-icon>
                         </div>
                         <div class="menu-title">Mata Pelajaran</div>
                     </a>
+                    <ul>
+                        <li> <a href="{{ route('mapel.index.sughro') }}">
+                                <ion-icon name="ellipse-outline"></ion-icon>Sughro
+                            </a>
+                        </li>
+                        <li> <a href="{{ route('mapel.index.kubro') }}">
+                                <ion-icon name="ellipse-outline"></ion-icon>Kubro
+                            </a>
+                        </li>
+                        <li> <a href="{{ route('mapel.index.wustho') }}">
+                                <ion-icon name="ellipse-outline"></ion-icon>Wustho
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="{{ route('classroom.index') }}">
@@ -94,14 +109,14 @@
                         <div class="menu-title">Kelas</div>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('rapor.index') }}">
                         <div class="parent-icon">
                             <ion-icon name="file-tray-stacked"></ion-icon>
                         </div>
                         <div class="menu-title">Data Raport</div>
                     </a>
-                </li>
+                </li> --}}
                 {{-- <li class="menu-label">UI Elements</li> --}}
                 <li class="menu-label">Data Raport</li>
                 <li>
@@ -121,12 +136,11 @@
                             </a>
                         </li>
                         <li> <a href="{{ route('rapor.index.wustho') }}">
-                            <ion-icon name="ellipse-outline"></ion-icon>Wustho
-                        </a>
-                    </li>
+                                <ion-icon name="ellipse-outline"></ion-icon>Wustho
+                            </a>
+                        </li>
                     </ul>
                 </li>
-
             </ul>
             <!--end navigation-->
         </aside>

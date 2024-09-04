@@ -21,6 +21,35 @@ class MapelController extends Controller
         return view('admin/mapel/index', compact('mapels', 'classrooms'));
     }
 
+    public function indexSughro()
+    {
+        $classroom = Classroom::where('nama', 'sughro')->firstOrFail();
+        $mapels = Mapel::where('id_classroom', $classroom->id)->get();
+        $classrooms = Classroom::get();
+
+        return view('admin/mapel/kelas/sughro', compact('mapels', 'classroom','classrooms'));
+    }
+
+    public function indexKubro()
+    {
+        $classroom = Classroom::where('nama', 'Kubro')->firstOrFail();
+        $mapels = Mapel::where('id_classroom', $classroom->id)->get();
+        $classrooms = Classroom::get();
+
+
+        return view('admin/mapel/kelas/kubro', compact('mapels', 'classroom','classrooms'));
+    }
+
+    public function indexWustho()
+    {
+        $classroom = Classroom::where('nama', 'Wustho')->firstOrFail();
+        $mapels = Mapel::where('id_classroom', $classroom->id)->get();
+        $classrooms = Classroom::get();
+
+
+        return view('admin/mapel/kelas/wustho', compact('mapels', 'classroom','classrooms'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -46,7 +75,7 @@ class MapelController extends Controller
         $mapel = Mapel::create($request->all());
 
         // Dapatkan semua rapor yang berhubungan dengan kelas tersebut
-        $rapors = Rapor::whereHas('santri', function($query) use ($mapel) {
+        $rapors = Rapor::whereHas('santri', function ($query) use ($mapel) {
             $query->where('id_classroom', $mapel->id_classroom);
         })->get();
 
@@ -59,8 +88,7 @@ class MapelController extends Controller
             ]);
         }
 
-        return redirect()->route('mapel.index')
-            ->with('success', 'Mapel created successfully.');
+        return redirect()->back()->with('success', 'Mapel created successfully.');
     }
 
     /**
@@ -109,6 +137,6 @@ class MapelController extends Controller
         // $mapel->delete();
         $mapel = Mapel::findOrFail($id);
         $mapel->delete();
-        return redirect()->route('mapel.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }

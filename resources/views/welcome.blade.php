@@ -1,4 +1,4 @@
-{{-- <!doctype html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
@@ -8,6 +8,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" href="{{asset('assets/images/logoponpes.png')}}">
+    
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
@@ -34,5 +36,5 @@
     </div>
 
 </body>
-</html> --}}
-<?php phpinfo(); ?>
+</html>
+{{-- <?php phpinfo(); ?> --}}
