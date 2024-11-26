@@ -26,9 +26,7 @@ class DetailController extends Controller
      */
     public function create()
     {
-        $santris = Santri::all();
-        $mapel = Mapel::all();
-        return view('detail-rapor.create',compact('santris','mapel'));
+        
     }
 
     /**
@@ -36,24 +34,7 @@ class DetailController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
-        $validatedData = $request->validate([
-            'id_mapel' => 'required|array',
-            'id_santri' => 'required|array',
-
-        ]);
-
-        // Mengambil data yang dipilih
-        $mapelId = $request->input('id_mapel');
-
-        // Contoh pemrosesan data
-        foreach ($mapelId as $mapel) {
-            // Lakukan sesuatu dengan setiap ID kelas yang dipilih
-            // Misalnya, simpan ke database atau proses lainnya
-        }
-
-        // Redirect atau respon sesuai kebutuhan
-        return redirect()->route('detail-rapor.index')->with('success', 'Data berhasil disimpan.');
+        
     }
 
 

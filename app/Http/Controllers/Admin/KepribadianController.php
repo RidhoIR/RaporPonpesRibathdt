@@ -39,10 +39,8 @@ class KepribadianController extends Controller
             ]);
             return redirect()->back()->with('success', 'Nilai updated successfully');
         } catch (ModelNotFoundException $e) {
-            // Handle the case where the record is not found
             return redirect()->back()->with('error', 'Detail Kepribadian not found');
         } catch (Exception $e) {
-            // Handle any other exceptions
             return redirect()->back()->with('error', 'An error occurred while updating nilai');
         }
     }

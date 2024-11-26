@@ -158,22 +158,18 @@ class SantriController extends Controller
             $santri = Santri::findOrFail($id);
             $previousClassroomId = $santri->id_classroom;
 
-            // Check if a new photo was uploaded
+            
             if ($request->hasFile('foto')) {
-                // Delete the old photo if it exists
                 if ($santri->foto && file_exists(storage_path('app/public/' . $santri->foto))) {
                     unlink(storage_path('app/public/' . $santri->foto));
                 }
 
-                // Store the new photo and get the filename
                 $photoPath = $request->file('foto')->store('santri_photos', 'public');
                 $validatedData['foto'] = $photoPath;
             }
 
-            // Update the santri data
             $santri->update($validatedData);
 
-            // Check if the classroom has changed
             if ($previousClassroomId != $validatedData['id_classroom']) {
                 $rapors = Rapor::where('id_santri', $santri->id)->get();
 

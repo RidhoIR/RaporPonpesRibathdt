@@ -80,15 +80,12 @@ class MapelController extends Controller
             'id_classroom' => 'required|integer|exists:classrooms,id',
         ]);
 
-        // Buat mapel baru
         $mapel = Mapel::create($request->all());
 
-        // Dapatkan semua rapor yang berhubungan dengan kelas tersebut
         $rapors = Rapor::whereHas('santri', function ($query) use ($mapel) {
             $query->where('id_classroom', $mapel->id_classroom);
         })->get();
 
-        // Tambahkan entri ke detail_mapel untuk setiap rapor
         foreach ($rapors as $rapor) {
             DetailMapel::create([
                 'id_mapel' => $mapel->id,

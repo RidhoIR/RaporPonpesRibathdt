@@ -61,13 +61,10 @@ class RaporController extends Controller
             return $query->where('semester', $semester);
         })->with('santri.classroom')->get();
 
-        // Mengambil semua santri
         $santris = Santri::all();
 
-        // Mengambil semua mapel
         $mapel = Mapel::all();
 
-        // Mengambil semua kelas untuk dropdown semester
         $classrooms = Classroom::all();
 
         return view('admin/rapor/kelas/tiddal', compact('rapors', 'santris', 'mapel', 'classrooms', 'semester'));
