@@ -14,7 +14,7 @@ class Mapel extends Model
      * @var array
      */
     protected $fillable =
-    ['id_classroom','nama', 'keterangan', 'type'];
+    ['id_classroom','nama', 'type'];
 
 
     

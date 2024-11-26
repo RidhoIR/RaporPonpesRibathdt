@@ -27,6 +27,10 @@ class Rapor extends Model
         return $this->hasMany(DetailMapel::class, 'id_rapor');
     }
 
+    public function detail_kepribadians(){
+        return $this->hasMany(detail_kepribadian::class, 'id_rapor');
+    }
+
     public function detailMapelsEkstrakurikuler()
     {
         return $this->hasMany(DetailMapel::class, 'id_rapor')->whereHas('mapel', function ($query) {

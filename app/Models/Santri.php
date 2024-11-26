@@ -22,7 +22,9 @@ class Santri extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'alamat',
-        'tahun_masuk'
+        'tahun_masuk',
+        'foto'
+
     ];
 
     public function classroom()

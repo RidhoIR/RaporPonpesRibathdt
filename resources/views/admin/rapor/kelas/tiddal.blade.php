@@ -1,16 +1,16 @@
 @extends('layouts.template')
-@section('title', 'Rapor Kelas Wustho')
+@section('title', 'Rapor Kelas Tiddal' . config('app.name'))
 @section('content')
     <div class="">
         <div class="d-flex justify-content-between align-items-center">
-            <h2 class="text-uppercase mb-0">Kelas Wustho</h2>
-            {{-- <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ Tambah Data</button> --}}
+            <h2 class="text-uppercase mb-0">Kelas Tiddal</h2>
+            {{-- <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Kelas</button> --}}
         </div>
         <hr />
         <div class="card">
             <div class="card-body">
                 <!-- Form untuk filter berdasarkan semester -->
-                <form method="GET" action="{{ route('rapor.index.wustho') }}" class="mb-4">
+                <form method="GET" action="{{ route('rapor.index.sughro') }}" class="mb-4">
                     <div class="row">
                         <div class="col-md-3">
                             <label for="semester" class="form-label">Semester</label>
@@ -60,8 +60,8 @@
                                         </button>
                                         {{-- <button class="btn btn-outline-danger me-2" data-bs-toggle="modal"
                                             data-bs-target="#confirmDeleteModal{{ $rapor->id }}">
-                                            <i class="fas fa-trash"></i>
-                                        </button> --}}
+                                            <i class="fas fa-trash"></i> --}}
+                                        </button>
                                         <button class="btn btn-outline-warning me-2" data-bs-toggle="modal"
                                             data-bs-target="#editModal{{ $rapor->id }}">
                                             <i class="fas fa-edit"></i>

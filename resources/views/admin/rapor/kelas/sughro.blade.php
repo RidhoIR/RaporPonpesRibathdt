@@ -1,10 +1,10 @@
 @extends('layouts.template')
-
+@section('title', 'Rapor Kelas Sughro' . config('app.name'))
 @section('content')
     <div class="">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="text-uppercase mb-0">Kelas Sughro</h2>
-            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Kelas</button>
+            {{-- <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Kelas</button> --}}
         </div>
         <hr />
         <div class="card">

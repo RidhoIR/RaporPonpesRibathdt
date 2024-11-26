@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('id_mapel')->references('id')->on('mapels')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('id_rapor')->references('id')->on('rapors')->onDelete('cascade')->onUpdate('cascade');
             $table->double("nilai")->default(0);
+            $table->string("keterangan")->default("tidak ada");
             $table->timestamps();
         });
     }

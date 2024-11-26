@@ -1,5 +1,5 @@
 @extends('layouts.template')
-
+@section('title', 'Rapor Santri' . config('app.name'))
 @section('content')
     <div class="">
         <div class="d-flex justify-content-between align-items-center">

@@ -1,5 +1,5 @@
 @extends('layouts.template')
-
+@section('title', 'Mapel Kelas Sughro')
 @section('content')
     <div class="">
         <div class="d-flex justify-content-between align-items-center">
@@ -16,7 +16,7 @@
                             <th>No</th>
                             <th>Mata Pelajaran</th>
                             <th>Kelas</th>
-                            <th>Keterangan</th>
+                            {{-- <th>Keterangan</th> --}}
                             <th>Type</th>
                             <th>Action</th>
                         </tr>
@@ -27,7 +27,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $mapel->nama }}</td>
                                 <td>{{ $mapel->classroom->nama }}</td>
-                                <td>{{ $mapel->keterangan }}</td>
+                                {{-- <td>{{ $mapel->keterangan }}</td> --}}
                                 <td>{{ $mapel->type }}</td>
                                 <td>
                                     <div class="d-flex justify-content-start">

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mapels', function (Blueprint $table) {
+        Schema::create('detail_kepribadians', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_classroom')->references('id')->on('classrooms')->onDelete('cascade')->onUpdate('cascade');
-            $table->string("nama");
-            $table->string("type");
+            $table->foreignId('id_kepribadian')->references('id')->on('kepribadians')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_rapor')->references('id')->on('rapors')->onDelete('cascade')->onUpdate('cascade');
+            $table->char('nilai');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mapels');
+        Schema::dropIfExists('detail_kepribadians');
     }
 };

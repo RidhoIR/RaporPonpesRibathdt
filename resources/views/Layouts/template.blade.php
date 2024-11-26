@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('assets/images/logoponpes.png') }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', config('app.name', 'Rapor'))</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -87,6 +87,10 @@
                         <div class="menu-title">Mata Pelajaran</div>
                     </a>
                     <ul>
+                        <li> <a href="{{ route('mapel.index.tiddal') }}">
+                                <ion-icon name="ellipse-outline"></ion-icon>Tiddal
+                            </a>
+                        </li>
                         <li> <a href="{{ route('mapel.index.sughro') }}">
                                 <ion-icon name="ellipse-outline"></ion-icon>Sughro
                             </a>
@@ -109,6 +113,22 @@
                         <div class="menu-title">Kelas</div>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('kategori-kepribadian.index') }}">
+                        <div class="parent-icon">
+                            <ion-icon name="person-circle-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Indikator Kepribadian</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('kepribadian.index') }}">
+                        <div class="parent-icon">
+                            <ion-icon name="person-circle-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Kepribadian</div>
+                    </a>
+                </li>
                 {{-- <li>
                     <a href="{{ route('rapor.index') }}">
                         <div class="parent-icon">
@@ -118,7 +138,7 @@
                     </a>
                 </li> --}}
                 {{-- <li class="menu-label">UI Elements</li> --}}
-                <li class="menu-label">Data Raport</li>
+                <li class="menu-label">Data Rapor</li>
                 <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon">
@@ -127,6 +147,10 @@
                         <div class="menu-title">Raport</div>
                     </a>
                     <ul>
+                        <li> <a href="{{ route('rapor.index.tiddal') }}">
+                                <ion-icon name="ellipse-outline"></ion-icon>Tiddal
+                            </a>
+                        </li>
                         <li> <a href="{{ route('rapor.index.sughro') }}">
                                 <ion-icon name="ellipse-outline"></ion-icon>Sughro
                             </a>

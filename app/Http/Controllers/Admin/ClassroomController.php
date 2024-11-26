@@ -43,10 +43,7 @@ class ClassroomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -61,17 +58,17 @@ class ClassroomController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
         $request->validate([
             'nama' => 'required',
             'tahun_ajaran' => 'required',
         ]);
-        try{
-        // dd($request->all());
-        $classroom = Classroom::find($id);
-        $classroom->update($request->all());
-        return redirect()->route('classroom.index')->with('success', 'Data berhasil diubah');
-        }catch(\Exception $e){
+        try {
+            // dd($request->all());
+            $classroom = Classroom::find($id);
+            $classroom->update($request->all());
+            return redirect()->route('classroom.index')->with('success', 'Data berhasil diubah');
+        } catch (\Exception $e) {
             return redirect()->route('classroom.index')->with('error', 'Data gagal diubah');
         }
     }
@@ -81,12 +78,12 @@ class ClassroomController extends Controller
      */
     public function destroy(string $id)
     {
-        $santri = Santri::where('id_classroom',$id)->exists();
-        if($santri){
+        $santri = Santri::where('id_classroom', $id)->exists();
+        if ($santri) {
             return redirect()->route('classroom.index')->with('error', 'Data santri gagal dihapus');
         }
         $classroom = Classroom::find($id);
         $classroom->delete();
-        return redirect()->route('classroom.index')->with('success', 'Data berhasil dihapus');  
+        return redirect()->route('classroom.index')->with('success', 'Data berhasil dihapus');
     }
 }

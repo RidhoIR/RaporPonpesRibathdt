@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date("tanggal_lahir");
             $table->string("alamat");
             $table->integer("tahun_masuk");
+            $table->string("foto");
             $table->timestamps();
         });
     }

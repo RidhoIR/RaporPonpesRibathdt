@@ -1,4 +1,5 @@
 @extends('layouts.template')
+@section('title', 'Santri ')
 
 @section('content')
     <div class="">
@@ -74,7 +75,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('santri.store') }}" method="POST">
+                    <form action="{{ route('santri.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">NIS</label>
@@ -122,6 +123,10 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="foto">Upload Foto</label>
+                            <input type="file" name="foto" id="foto" class="form-control">
+                        </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
                 </div>
@@ -166,7 +171,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('santri.update', ['santri' => $santri->id]) }}" method="POST">
+                        <form action="{{ route('santri.update', ['santri' => $santri->id]) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
@@ -248,6 +254,17 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="foto">Upload Foto</label>
+                                <input type="file" name="foto" id="foto" class="form-control">
+                                <!-- Display current photo -->
+                                @if ($santri->foto)
+                                    <div class="mt-2">
+                                        <img src="{{ asset('storage/' . $santri->foto) }}" alt="Foto Santri"
+                                            style="max-width: 150px;">
+                                    </div>
+                                @endif
+                            </div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>
                     </div>
@@ -255,15 +272,4 @@
             </div>
         </div>
     @endforeach
-
-    <!-- JS -->
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#example2').DataTable();
-        });
-    </script> --}}
 @endsection

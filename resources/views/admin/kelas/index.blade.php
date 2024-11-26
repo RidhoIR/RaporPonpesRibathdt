@@ -1,5 +1,5 @@
 @extends('layouts.template')
-
+@section('title', 'Kelas')
 @section('content')
     <div class="">
         <div class="d-flex justify-content-between align-items-center">
@@ -14,7 +14,7 @@
                         <tr>
                             <th>No</th>
                             <th>Kelas</th>
-                            <th>Tahun Ajaran</th>
+                            {{-- <th>Tahun Ajaran</th> --}}
                             {{-- <th>Tahun Ajaran Hijriyah</th> --}}
                             <th width="280px">Action</th>
                         </tr>
@@ -24,7 +24,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $classroom->nama }}</td>
-                                <td>{{ $classroom->tahun_ajaran }}</td>
+                                {{-- <td>{{ $classroom->tahun_ajaran }}</td> --}}
                                 {{-- <td>{{ $classroom->tahun_ajaran_hijriah }}</td> --}}
                                 <td>
                                     <div class="d-flex justify-content-start">

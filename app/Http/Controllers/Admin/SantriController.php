@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classroom;
+use App\Models\detail_kepribadian;
 use App\Models\DetailMapel;
+use App\Models\Kepribadian;
 use App\Models\Mapel;
 use App\Models\Rapor;
 use App\Models\Santri;
@@ -32,7 +34,21 @@ class SantriController extends Controller
     public function store(Request $request)
     {
         try {
-            $santri = Santri::create([
+            // Validasi input, termasuk file foto
+            $request->validate([
+                'id_classroom' => 'required',
+                'nomor_induk' => 'required|unique:santris',
+                'nama' => 'required',
+                'nama_wali' => 'required',
+                'tempat_lahir' => 'required',
+                'tanggal_lahir' => 'required|date',
+                'alamat' => 'required',
+                'tahun_masuk' => 'required|integer',
+                'foto' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Validate photo
+            ]);
+
+            // Menyimpan data santri
+            $santriData = [
                 'id_classroom' => $request->id_classroom,
                 'nomor_induk' => $request->nomor_induk,
                 'nama' => $request->nama,
@@ -41,32 +57,72 @@ class SantriController extends Controller
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'alamat' => $request->alamat,
                 'tahun_masuk' => $request->tahun_masuk,
-            ]);
-        
-            
+            ];
+
+            // Jika ada foto, simpan foto di storage dan masukkan ke dalam data santri
+            if ($request->hasFile('foto')) {
+                $photoPath = $request->file('foto')->store('santri_photos', 'public');
+                $santriData['foto'] = $photoPath;
+            }
+
+            $santri = Santri::create($santriData);
+
+            // Mengambil mapel sesuai classroom
             $mapels = Mapel::where('id_classroom', $request->id_classroom)->get();
             $tahunAjaran = Carbon::now()->format('Y') . '-' . (Carbon::now()->format('Y') + 1);
-            
+
+            // Menyimpan rapor semester 1
             $rapor = Rapor::create([
                 'id_santri' => $santri->id,
                 'semester' => 1,
                 'tahun_ajaran' => $tahunAjaran,
             ]);
-            
+
+            // Menyimpan rapor semester 2
+            $rapor2 = Rapor::create([
+                'id_santri' => $santri->id,
+                'semester' => 2,
+                'tahun_ajaran' => $tahunAjaran,
+            ]);
+
+            // Menyimpan detail mapel untuk semester 1 dan semester 2
             foreach ($mapels as $mapel) {
+                // Untuk semester 1
                 DetailMapel::create([
                     'id_mapel' => $mapel->id,
-                    'id_rapor' => $rapor->id, 
+                    'id_rapor' => $rapor->id,
+                    'nilai' => 0,
+                ]);
+
+                // Untuk semester 2
+                DetailMapel::create([
+                    'id_mapel' => $mapel->id,
+                    'id_rapor' => $rapor2->id,
                     'nilai' => 0,
                 ]);
             }
 
-            return redirect()->route('santri.index')
-                ->with('success', 'Santri created successfully.');
+            // Menyimpan kepribadian untuk semester 1 dan semester 2
+            $kepribadians = Kepribadian::all();
+            foreach ($kepribadians as $kepribadian) {
+                detail_kepribadian::create([
+                    'id_kepribadian' => $kepribadian->id,
+                    'id_rapor' => $rapor->id,
+                    'nilai' => 'E',
+                ]);
+                detail_kepribadian::create([
+                    'id_kepribadian' => $kepribadian->id,
+                    'id_rapor' => $rapor2->id,
+                    'nilai' => 'E',
+                ]);
+            }
+
+            return redirect()->route('santri.index')->with('success', 'Santri dan rapor semester 1 dan 2 berhasil ditambahkan.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
 
 
     public function show($id)
@@ -96,24 +152,36 @@ class SantriController extends Controller
                 'tanggal_lahir' => 'required|date',
                 'alamat' => 'required|string',
                 'tahun_masuk' => 'required|integer',
+                'foto' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Validate photo
             ]);
-    
+
             $santri = Santri::findOrFail($id);
             $previousClassroomId = $santri->id_classroom;
-    
+
+            // Check if a new photo was uploaded
+            if ($request->hasFile('foto')) {
+                // Delete the old photo if it exists
+                if ($santri->foto && file_exists(storage_path('app/public/' . $santri->foto))) {
+                    unlink(storage_path('app/public/' . $santri->foto));
+                }
+
+                // Store the new photo and get the filename
+                $photoPath = $request->file('foto')->store('santri_photos', 'public');
+                $validatedData['foto'] = $photoPath;
+            }
+
+            // Update the santri data
             $santri->update($validatedData);
-    
+
+            // Check if the classroom has changed
             if ($previousClassroomId != $validatedData['id_classroom']) {
-                
                 $rapors = Rapor::where('id_santri', $santri->id)->get();
-    
+
                 foreach ($rapors as $rapor) {
-                    
                     DetailMapel::where('id_rapor', $rapor->id)->delete();
-    
-                    
+
                     $newMapels = Mapel::where('id_classroom', $validatedData['id_classroom'])->get();
-    
+
                     foreach ($newMapels as $mapel) {
                         DetailMapel::create([
                             'id_mapel' => $mapel->id,
@@ -121,23 +189,24 @@ class SantriController extends Controller
                             'nilai' => 0,
                         ]);
                     }
-    
+
                     $totalNilai = $rapor->detailMapels->sum('nilai');
                     $jumlahMapel = $rapor->detailMapels->count();
                     $rataRataNilai = $jumlahMapel > 0 ? $totalNilai / $jumlahMapel : 0;
-    
+
                     $rapor->update([
                         'jumlah_nilai' => $totalNilai,
                         'rata_rata_nilai' => $rataRataNilai,
                     ]);
                 }
-            }    
+            }
 
             return redirect()->route('santri.index')->with('success', 'Data santri berhasil diubah');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
 
 
 

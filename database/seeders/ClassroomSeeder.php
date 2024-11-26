@@ -15,6 +15,10 @@ class ClassroomSeeder extends Seeder
     {
         $classroom = [
             [
+                'nama' => 'Tiddal',
+                'tahun_ajaran' => '2023',
+            ],
+            [
                 'nama' => 'Sughro',
                 'tahun_ajaran' => '2024',
                 // 'tahun_ajaran_hijriah' => '1445', // Correct column name

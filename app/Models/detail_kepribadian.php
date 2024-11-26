@@ -5,24 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetailMapel extends Model
+class detail_kepribadian extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id_mapel',
+        'id_kepribadian',
         'id_rapor',
-        'nilai',
-        'keterangan',
+        'nilai'
     ];
 
-    public function mapel()
+    public function kepribadian()
     {
-        return $this->belongsTo(Mapel::class, 'id_mapel');
+        return $this->belongsTo(Kepribadian::class, 'id_kepribadian');
     }
 
     public function rapor()
     {
         return $this->belongsTo(Rapor::class, 'id_rapor');
     }
+
+
 }

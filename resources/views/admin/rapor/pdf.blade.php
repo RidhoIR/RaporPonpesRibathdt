@@ -31,7 +31,7 @@
             margin-top: 20px;
         }
 
-        .data-santri{
+        .data-santri {
             margin-top: 10px;
             border-collapse: collapse;
             width: 100%;
@@ -46,7 +46,7 @@
             padding-bottom: 50px;
         }
 
-        .data-santri tr{
+        .data-santri tr {
             padding-bottom: 20px;
             /* border-bottom: 2px solid black; */
         }
@@ -82,43 +82,41 @@
             height: auto;
         }
 
-        .table-footer{
+        .table-footer {
             border-collapse: collapse;
             width: 100%;
             /* border: 1px solid black; */
         }
 
-        .header-nilai{
+        .header-nilai {
             border-collapse: collapse;
             width: 100%;
         }
 
-        .header-nilai td{
+        .header-nilai td {
             /* border: 1px solid black; */
             font-size: 14px;
         }
 
-        .table-footer td{
+        .table-footer td {
             /* border: 1px solid black; */
             text-align: center;
         }
 
-        .total-nilai{
+        .total-nilai {
             border-collapse: collapse;
             width: 100%;
             margin-top: 20px;
         }
 
-        .total-nilai td{
+        .total-nilai td {
             /* border: 1px solid black; */
             padding: 8px;
         }
 
-        .total-nilai tr{
+        .total-nilai tr {
             border: 1px solid black;
         }
-
-        
     </style>
 </head>
 
@@ -182,15 +180,40 @@
 
     <div class="page-break"></div>
 
+    <div class="section-title">NILAI KEPRIBADIAN</div>
+    <table class="nilai">
+        <tr>
+            <td>Indikator Kepribadian</td>
+            <td>Sub Indikator</td>
+            <td>Nilai</td>
+        </tr>
+        @foreach ($rapor->detail_kepribadians->groupBy('kepribadian.kategori.id') as $detailKepribadian => $items)
+            @foreach ($items as $index => $detailKepribadian)
+                <tr>
+                    @if ($index === 0)
+                        <td rowspan="{{ count($items) }}">
+                            {{ $detailKepribadian->kepribadian->kategori->indikator_kepribadian ?? 'Tidak ada kategori' }}
+                        </td>
+                    @endif
+                    <td>{{ $detailKepribadian->kepribadian->sub_indikator }}</td>
+                    <td>{{ $detailKepribadian->nilai }}</td>
+                </tr>
+            @endforeach
+        @endforeach
+    </table>
+
+    <div class="page-break"></div>
+
+
     <div class="section-title">MATA PELAJARAN</div>
     <table class="header-nilai">
         <td>
-            <p>NAMA : {{$rapor->santri->nama}}</p>
-            <p>KELAS : {{$rapor->santri->classroom->nama}}</p>
+            <p>NAMA : {{ $rapor->santri->nama }}</p>
+            <p>KELAS : {{ $rapor->santri->classroom->nama }}</p>
         </td>
         <td style="width: 30%;">
-            <p>SEMESTER : {{$rapor->semester}}</p>
-            <p>TAHUN AJARAN : {{$rapor->tahun_ajaran}}</p>
+            <p>SEMESTER : {{ $rapor->semester }}</p>
+            <p>TAHUN AJARAN : {{ $rapor->tahun_ajaran }}</p>
         </td>
     </table>
     <table class="nilai">
@@ -205,7 +228,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $detailMapel->mapel->nama }}</td>
                 <td>{{ $detailMapel->nilai }}</td>
-                <td>{{ $detailMapel->mapel->keterangan }}</td>
+                <td>{{ $detailMapel->keterangan }}</td>
             </tr>
         @endforeach
     </table>
@@ -222,7 +245,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $detailMapel->mapel->nama }}</td>
                 <td>{{ $detailMapel->nilai }}</td>
-                <td>{{ $detailMapel->mapel->keterangan }}</td>
+                <td>{{ $detailMapel->keterangan }}</td>
             </tr>
         @endforeach
     </table>
@@ -247,7 +270,7 @@
             <tr>
                 <td> </td>
                 <td style="width: 40%;">
-                    <p>Surabaya, 10 Februari 2023</p>
+                    <p>Surabaya, {{$tanggalSekarang}}</p>
                     <p>Hormat Kami,</p>
                     <p style="font-style: bold;">KHODIMUL MA’HAD</p>
                     <br>
@@ -258,7 +281,6 @@
                 </td>
             </tr>
         </table>
-        
     </div>
 </body>
 

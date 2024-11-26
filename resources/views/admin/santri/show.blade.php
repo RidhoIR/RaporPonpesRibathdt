@@ -1,12 +1,12 @@
 @extends('layouts.template')
-
+@section('title', $santri->nama . 'Home - ')
 @section('content')
     <div class="container">
         <div class="">
             <div class="card overflow-hidden radius-10">
                 <div class="profile-cover bg-dark position-relative mb-4">
                     <div class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x">
-                        <img src="assets/images/avatars/06.png" alt="...">
+                        <img src="{{ asset('storage/' . $santri->foto) }}" alt="...">
                     </div>
                 </div>
                 <div class="card-body">
@@ -15,7 +15,6 @@
                             <h3 class="mt-2 mb-0">{{ $santri->nama }}</h3>
                             <p class="mb-3" style="font-size: 15px">{{ $santri->nomor_induk }} -
                                 {{ $santri->tahun_masuk }}</p>
-                            {{-- <p>{{$santri->tahun_masuk}}</p> --}}
                             <div class="d-flex gap-1 flex-column justify-content-between" style="font-size: 15px">
                                 <div><i class="bi bi-calendar me-2" style=""></i><strong>Tahun Masuk:</strong>
                                     <span>{{ $santri->tahun_masuk }}</span>

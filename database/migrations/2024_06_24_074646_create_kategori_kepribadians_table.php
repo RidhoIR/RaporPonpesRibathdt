@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mapels', function (Blueprint $table) {
+        Schema::create('kategori_kepribadians', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_classroom')->references('id')->on('classrooms')->onDelete('cascade')->onUpdate('cascade');
-            $table->string("nama");
-            $table->string("type");
+            $table->string('indikator_kepribadian');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mapels');
+        Schema::dropIfExists('kategori_kepribadians');
     }
 };

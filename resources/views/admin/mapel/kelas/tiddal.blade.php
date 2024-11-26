@@ -1,6 +1,5 @@
 @extends('layouts.template')
-@section('title', 'Mapel Kelas Kubro')
-
+@section('title', 'Mapel Kelas Tiddal')
 @section('content')
     <div class="">
         <div class="d-flex justify-content-between align-items-center">

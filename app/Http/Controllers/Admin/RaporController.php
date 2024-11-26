@@ -10,6 +10,8 @@ use App\Models\Rapor;
 use App\Models\Santri;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+
 
 class RaporController extends Controller
 {
@@ -46,6 +48,30 @@ class RaporController extends Controller
     //     // Kembalikan view dengan data yang difilter
     //     return view('admin/rapor/kelas/sughro', compact('rapors', 'santris', 'mapel', 'classrooms', 'semester', 'classroomId'));
     // }
+
+    public function indexTiddal(Request $request)
+    {
+        // Ambil nilai semester dari query parameter
+        $semester = $request->query('semester');
+
+        // Filter rapor berdasarkan kelas 'Sughro' dan semester jika diberikan
+        $rapors = Rapor::whereHas('santri.classroom', function ($query) {
+            $query->where('nama', 'Tiddal');
+        })->when($semester, function ($query, $semester) {
+            return $query->where('semester', $semester);
+        })->with('santri.classroom')->get();
+
+        // Mengambil semua santri
+        $santris = Santri::all();
+
+        // Mengambil semua mapel
+        $mapel = Mapel::all();
+
+        // Mengambil semua kelas untuk dropdown semester
+        $classrooms = Classroom::all();
+
+        return view('admin/rapor/kelas/tiddal', compact('rapors', 'santris', 'mapel', 'classrooms', 'semester'));
+    }
     public function indexSughro(Request $request)
     {
         // Ambil nilai semester dari query parameter
@@ -190,7 +216,6 @@ class RaporController extends Controller
         $this->updateRanking();
 
         return redirect()->back()->with('success', 'Rapor created successfully.');
-
     }
 
     public function updateRapor(Request $request, $id)
@@ -210,36 +235,39 @@ class RaporController extends Controller
     {
         $rapor = Rapor::with('detailMapels')->findOrFail($id);
 
-        // Loop melalui semua nilai yang diupdate
+        // Loop through all updated values
         foreach ($request->nilai as $detailMapelId => $nilai) {
             $detailMapel = $rapor->detailMapels->where('id', $detailMapelId)->first();
             if ($detailMapel) {
                 $detailMapel->nilai = $nilai;
+
+                // Check if 'keterangan' exists in the request, and update it if necessary
+                if (isset($request->keterangan[$detailMapelId])) {
+                    $detailMapel->keterangan = $request->keterangan[$detailMapelId];
+                }
+
                 $detailMapel->save();
             }
         }
 
-        // Menghitung total nilai dari semua detailMapels terkait yang nilainya lebih dari 0
+        // Calculate total and average scores from non-zero values
         $totalNilai = $rapor->detailMapels->where('nilai', '>', 0)->sum('nilai');
-
-        // Menghitung jumlah mata pelajaran yang nilainya lebih dari 0
         $jumlahMapel = $rapor->detailMapels->where('nilai', '>', 0)->count();
 
-        // Menghitung rata-rata nilai dengan mengabaikan mata pelajaran yang nilainya 0
+        // Calculate the average score, ignoring subjects with a score of 0
         $rataRataNilai = $jumlahMapel > 0 ? $totalNilai / $jumlahMapel : 0;
-
-        // Membatasi angka setelah koma menjadi 2 digit
         $rataRataNilai = number_format($rataRataNilai, 2);
 
-        // Menyimpan total nilai dan rata-rata nilai ke tabel rapors
+        // Save total and average scores to the Rapor table
         $rapor->jumlah_nilai = $totalNilai;
         $rapor->rata_rata_nilai = $rataRataNilai;
         $rapor->save();
 
         $this->updateRanking();
 
-        return redirect()->route('rapor.show', $id)->with('success', 'Nilai updated successfully');
+        return redirect()->route('rapor.show', $id)->with('success', 'Nilai updated successfully.');
     }
+
 
 
 
@@ -248,20 +276,22 @@ class RaporController extends Controller
      */
     public function show(string $id)
     {
-        $rapor = Rapor::with('santri', 'detailMapels.mapel')->where('id', $id)->firstOrFail();
+        $rapor = Rapor::with('santri', 'detailMapels.mapel', 'detail_kepribadians.kepribadian')->where('id', $id)->firstOrFail();
         return view('admin.rapor.show', compact('rapor'));
     }
 
     public function downloadPDF($id)
     {
-        $rapor = Rapor::with('santri', 'detailMapels.mapel')->where('id', $id)->firstOrFail();
+        $rapor = Rapor::with('santri', 'detailMapels.mapel', 'detail_kepribadians.kepribadian')->where('id', $id)->firstOrFail();
 
         $matapelajaran = $rapor->detailMapelsMatapelajaran;
         $ekskul = $rapor->detailMapelsEkstrakurikuler;
+        $kepriadian = $rapor->detail_kepribadians;
+        $tanggalSekarang = Carbon::now()->locale('id')->isoFormat('D MMMM YYYY');
 
         $logoPath = public_path('assets/images/logoponpes.png');
 
-        $pdf = PDF::loadView('admin.rapor.pdf', compact('rapor', 'matapelajaran', 'ekskul', 'logoPath'));
+        $pdf = PDF::loadView('admin.rapor.pdf', compact('rapor', 'matapelajaran', 'ekskul', 'logoPath', 'kepriadian', 'tanggalSekarang'));
         return $pdf->download('laporan_rapor_' . $rapor->santri->nama . '.pdf');
     }
 

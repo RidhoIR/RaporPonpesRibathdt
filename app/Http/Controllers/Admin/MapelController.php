@@ -21,6 +21,15 @@ class MapelController extends Controller
         return view('admin/mapel/index', compact('mapels', 'classrooms'));
     }
 
+    public function indexTiddal(){
+        $classroom = Classroom::where('nama', 'tiddal')->firstOrFail();
+        $mapels = Mapel::where('id_classroom', $classroom->id)->get();
+        $classrooms = Classroom::get();
+
+        return view('admin/mapel/kelas/tiddal', compact('mapels', 'classroom','classrooms'));
+
+    }
+
     public function indexSughro()
     {
         $classroom = Classroom::where('nama', 'sughro')->firstOrFail();
@@ -66,7 +75,7 @@ class MapelController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'keterangan' => 'required|string|max:255',
+            // 'keterangan' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'id_classroom' => 'required|integer|exists:classrooms,id',
         ]);

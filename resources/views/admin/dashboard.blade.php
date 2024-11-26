@@ -1,4 +1,5 @@
 @extends('Layouts.template')
+@section('title', 'Dashboard')
 
 @section('content')
     <div class="d-flex justify-center justify-content-center flex-column w-100">
